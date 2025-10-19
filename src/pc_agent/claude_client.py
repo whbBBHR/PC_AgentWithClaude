@@ -19,16 +19,23 @@ except ImportError:
 class ClaudeClient:
     """Client for interacting with Claude API"""
     
-    def __init__(self, api_key: str = None):
-        """Initialize Claude client"""
+    def __init__(self, api_key: str = None, config: Dict[str, Any] = None):
+        """Initialize Claude client with enhanced configuration"""
         # Try to get API key from parameter, environment, or config
         self.api_key = api_key or os.getenv('ANTHROPIC_API_KEY')
         self.client = None
         
+        # Load configuration with latest model defaults
+        self.config = config or {}
+        self.model = self.config.get('claude_model', 'claude-3-5-sonnet-20241022')
+        self.vision_model = self.config.get('vision_model', 'claude-3-5-sonnet-20241022')
+        self.max_tokens = self.config.get('max_tokens', 8192)
+        self.temperature = self.config.get('temperature', 0.1)
+        
         if self.api_key and self.api_key != 'your-claude-api-key-here':
             try:
                 self.client = anthropic.Anthropic(api_key=self.api_key)
-                logger.info("Claude client initialized successfully")
+                logger.info(f"Claude client initialized successfully with model: {self.model}")
             except Exception as e:
                 logger.error(f"Failed to initialize Claude client: {e}")
         else:
@@ -80,8 +87,9 @@ class ClaudeClient:
             }}"""
             
             message = self.client.messages.create(
-                model="claude-3-5-sonnet-20241022",
-                max_tokens=1500,
+                model=self.vision_model,
+                max_tokens=min(self.max_tokens, 4096),
+                temperature=self.temperature,
                 messages=[
                     {
                         "role": "user",
@@ -173,8 +181,9 @@ Return your plan in JSON format:
 }}"""
 
             message = self.client.messages.create(
-                model="claude-3-5-sonnet-20241022",
-                max_tokens=2000,
+                model=self.model,
+                max_tokens=min(self.max_tokens, 4096),
+                temperature=self.temperature,
                 messages=[
                     {
                         "role": "user",
@@ -240,8 +249,9 @@ Return your recommendation in JSON format:
 }}"""
 
             message = self.client.messages.create(
-                model="claude-3-5-sonnet-20241022",
-                max_tokens=800,
+                model=self.model,
+                max_tokens=min(self.max_tokens // 2, 2048),
+                temperature=self.temperature,
                 messages=[
                     {
                         "role": "user",
@@ -304,8 +314,9 @@ Return as JSON:
 }}"""
 
             message = self.client.messages.create(
-                model="claude-3-5-sonnet-20241022",
-                max_tokens=600,
+                model=self.model,
+                max_tokens=min(self.max_tokens // 4, 1024),
+                temperature=self.temperature,
                 messages=[
                     {
                         "role": "user",
@@ -345,8 +356,9 @@ Return as JSON:
             
         try:
             message = self.client.messages.create(
-                model="claude-3-5-sonnet-20241022",
-                max_tokens=max_tokens,
+                model=self.model,
+                max_tokens=min(max_tokens, self.max_tokens),
+                temperature=self.temperature,
                 messages=[
                     {
                         "role": "user",

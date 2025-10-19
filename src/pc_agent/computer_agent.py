@@ -55,7 +55,10 @@ class ComputerAgent:
         self.vision_analyzer = VisionAnalyzer(self.config)
         self.web_automator = WebAutomator(self.config)
         self.task_executor = TaskExecutor(self.config)
-        self.claude_client = ClaudeClient(self.config.anthropic_api_key)
+        self.claude_client = ClaudeClient(
+            api_key=self.config.anthropic_api_key,
+            config=self.config.__dict__
+        )
         
         # Set up component references for task executor
         self.task_executor.set_components(

@@ -1,5 +1,5 @@
-# Core dependencies - Updated for Claude Sonnet 3.5
-anthropic>=0.34.0
+# Core dependencies - Updated for Claude Sonnet 3.5 (Latest)
+anthropic>=0.71.0
 opencv-python>=4.9.0
 opencv-contrib-python>=4.9.0
 pillow>=10.4.0

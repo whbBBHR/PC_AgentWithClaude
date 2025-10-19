@@ -1,0 +1,112 @@
+PC Agent with Claude - Architecture Overview
+===============================================
+
+┌─────────────────────────────────────────────────────────────────┐
+│                    🎯 USER INTERFACE LAYER                     │
+└─────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────┐
+│              ⚡ TASK_EXECUTOR.PY (Orchestrator)                │
+│  ┌─────────────────────────────────────────────────────────┐    │
+│  │ • Task Planning & Coordination                          │    │
+│  │ • Multi-step Workflow Management                        │    │
+│  │ • Component Integration                                 │    │
+│  │ • Error Handling & Recovery                             │    │
+│  └─────────────────────────────────────────────────────────┘    │
+└─────────────────────────────────────────────────────────────────┘
+        │                    │                    │
+        ▼                    ▼                    ▼
+┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
+│   🤖 CLAUDE     │  │  🖥️ COMPUTER    │  │  🌐 WEB        │
+│   CLIENT        │  │   AGENT         │  │   AUTOMATOR     │
+│                 │  │                 │  │                 │
+│ ┌─────────────┐ │  │ ┌─────────────┐ │  │ ┌─────────────┐ │
+│ │• AI Chat    │ │  │ │• Screen     │ │  │ │• Browser    │ │
+│ │• Vision     │ │  │ │  Capture    │ │  │ │  Control    │ │
+│ │  Analysis   │ │  │ │• Mouse/Key  │ │  │ │• Page Nav   │ │
+│ │• Task       │ │  │ │  Control    │ │  │ │• Element    │ │
+│ │  Planning   │ │  │ │• Window     │ │  │ │  Interact   │ │
+│ │• Decision   │ │  │ │  Manage     │ │  │ │• Form Fill  │ │
+│ │  Making     │ │  │ │• App Launch │ │  │ │• Data Scrap │ │
+│ └─────────────┘ │  │ └─────────────┘ │  │ └─────────────┘ │
+└─────────────────┘  └─────────────────┘  └─────────────────┘
+        │                    │                    │
+        └────────────────────┼────────────────────┘
+                             ▼
+              ┌─────────────────────────────┐
+              │     👁️ VISION_ANALYZER     │
+              │                             │
+              │ ┌─────────────────────────┐ │
+              │ │ • Image Processing      │ │
+              │ │ • OCR Text Extraction   │ │
+              │ │ • UI Element Detection  │ │
+              │ │ • Pattern Recognition   │ │
+              │ │ • Screenshot Analysis   │ │
+              │ │ • Visual Feedback       │ │
+              │ └─────────────────────────┘ │
+              └─────────────────────────────┘
+
+DATA FLOW ARCHITECTURE:
+======================================
+
+🔄 EXECUTION FLOW:
+──────────────────
+1. USER REQUEST → TaskExecutor
+2. TaskExecutor → ClaudeClient (AI Planning)
+3. TaskExecutor → ComputerAgent (Action)
+4. ComputerAgent → VisionAnalyzer (Analysis)
+5. VisionAnalyzer → Screenshot Processing
+6. Results → TaskExecutor (Coordination)
+7. TaskExecutor → WebAutomator (if needed)
+8. Feedback Loop → ClaudeClient (Next Steps)
+
+📊 MODULE RELATIONSHIPS:
+────────────────────────
+
+TaskExecutor (CENTRAL HUB)
+    ├── → ClaudeClient      (AI Decision Making)
+    ├── → ComputerAgent     (Desktop Control)
+    ├── → WebAutomator      (Browser Control)
+    └── → VisionAnalyzer    (Image Processing)
+
+ClaudeClient
+    ├── ← TaskExecutor      (Task Coordination)
+    ├── ← VisionAnalyzer    (Screenshot Analysis)
+    └── → ALL MODULES       (AI Guidance)
+
+ComputerAgent
+    ├── ← TaskExecutor      (Action Commands)
+    ├── → VisionAnalyzer    (Screen Captures)
+    └── ↔ ClaudeClient      (Action Validation)
+
+VisionAnalyzer
+    ├── ← ComputerAgent     (Raw Screenshots)
+    ├── ← WebAutomator      (Page Analysis)
+    ├── → ClaudeClient      (Visual Context)
+    └── → TaskExecutor      (Analysis Results)
+
+WebAutomator
+    ├── ← TaskExecutor      (Web Tasks)
+    ├── → VisionAnalyzer    (Page Screenshots)
+    └── ↔ ClaudeClient      (Navigation Decisions)
+
+🎛️ CONTROL FLOW PATTERNS:
+─────────────────────────
+
+SIMPLE TASK: User → TaskExecutor → ComputerAgent → Done
+COMPLEX TASK: User → TaskExecutor → ClaudeClient → ComputerAgent → VisionAnalyzer → ClaudeClient → TaskExecutor
+WEB TASK: User → TaskExecutor → WebAutomator → VisionAnalyzer → ClaudeClient → TaskExecutor  
+AI TASK: User → TaskExecutor → ClaudeClient → [Multiple Modules] → ClaudeClient → TaskExecutor
+
+🔧 DEPENDENCY MATRIX:
+────────────────────
+                 Claude  Computer  Vision  Web    Task
+                Client   Agent   Analyzer Auto  Executor
+ClaudeClient       -       ✓        ✓      ✓      ✓
+ComputerAgent      ✓       -        ✓      ✗      ✓  
+VisionAnalyzer     ✓       ✗        -      ✗      ✓
+WebAutomator       ✓       ✗        ✓      -      ✓
+TaskExecutor       ✓       ✓        ✓      ✓      -
+
+Legend: ✓ = Direct Dependency, ✗ = No Direct Dependency

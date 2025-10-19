@@ -1,0 +1,138 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                    PC AGENT MODULE INTERACTION MAP                           ║
+║                          🎯 → ⚡ → 🤖🖥️👁️🌐                                ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+                              USER REQUEST
+                                   │
+                                   ▼
+        ╔══════════════════════════════════════════════════════════════╗
+        ║                   ⚡ TaskExecutor                            ║
+        ║  execute_task(description) ──┐                               ║
+        ║  plan_and_execute() ─────────┼─── Orchestrates all modules  ║
+        ║  coordinate_components() ────┘                               ║
+        ╚══════════════════════════════════════════════════════════════╝
+                 │              │              │              │
+      calls      │    calls     │   calls      │   calls      │
+   plan_task()   │ capture_   analyze_      open_browser()    │
+                 │ screen()   image()                         │
+                 ▼              ▼              ▼              ▼
+        ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+        │ 🤖 Claude   │ │ 🖥️Computer  │ │ 👁️Vision   │ │ 🌐Web       │
+        │ Client      │ │ Agent       │ │ Analyzer    │ │ Automator   │
+        ├─────────────┤ ├─────────────┤ ├─────────────┤ ├─────────────┤
+        │plan_task()  │ │capture_     │ │analyze_     │ │navigate_to()│
+        │analyze_     │ │screen()     │ │image()      │ │click_       │
+        │screenshot() │ │click_at()   │ │detect_text()│ │element()    │
+        │chat()       │ │type_text()  │ │find_buttons │ │fill_form()  │
+        │decide_next_ │ │scroll_page()│ │()           │ │take_        │
+        │action()     │ │launch_app() │ │locate_elem_ │ │screenshot() │
+        └─────────────┘ └─────────────┘ │ent()        │ └─────────────┘
+                 ▲              │       └─────────────┘        │
+                 │              │              ▲               │
+          returns│              │sends         │receives       │sends
+         analysis│         screenshots    analysis       screenshots
+                 │              │              │               │
+                 └──────────────┼──────────────┴───────────────┘
+                                ▼
+                     📊 VISION PROCESSING PIPELINE
+
+METHOD CALL FLOW EXAMPLES:
+═══════════════════════════
+
+🎯 SIMPLE DESKTOP AUTOMATION:
+──────────────────────────────
+TaskExecutor.execute_task("Click the submit button")
+    │
+    ├→ ComputerAgent.capture_screen() → screenshot.png
+    ├→ VisionAnalyzer.analyze_image(screenshot.png) → button_coords
+    ├→ ComputerAgent.click_at(button_coords.x, button_coords.y)
+    └→ return "Task completed successfully"
+
+🤖 AI-GUIDED COMPLEX TASK:
+──────────────────────────
+TaskExecutor.execute_task("Find and book the cheapest flight")
+    │
+    ├→ ClaudeClient.plan_task("book cheapest flight") → step_plan
+    ├→ WebAutomator.navigate_to("travel_site_url")
+    ├→ WebAutomator.take_screenshot() → page_img
+    ├→ VisionAnalyzer.analyze_image(page_img) → form_elements
+    ├→ ClaudeClient.analyze_screenshot(page_img, "find booking form")
+    ├→ WebAutomator.fill_form(form_data)
+    ├→ ClaudeClient.decide_next_action(current_state, goal)
+    └→ Loop until task completion
+
+🌐 WEB AUTOMATION WITH VISION:
+──────────────────────────────
+TaskExecutor.execute_task("Extract data from this table")
+    │
+    ├→ WebAutomator.take_screenshot() → table_img
+    ├→ VisionAnalyzer.detect_text(table_img) → ocr_results
+    ├→ VisionAnalyzer.find_table_structure(table_img) → table_coords
+    ├→ WebAutomator.scrape_table_data(table_coords) → raw_data
+    ├→ ClaudeClient.analyze_data(raw_data) → structured_data
+    └→ return structured_data
+
+INTER-MODULE COMMUNICATION:
+══════════════════════════
+
+🔄 Data Exchange Patterns:
+─────────────────────────
+
+TaskExecutor ←→ ClaudeClient:
+  • task_description (string) → AI_plan (dict)
+  • current_state (dict) → next_action (string)
+  • results (any) → evaluation (dict)
+
+TaskExecutor ←→ ComputerAgent:
+  • action_command (string) → execution_result (bool)
+  • coordinates (tuple) → click_success (bool)
+  • app_name (string) → launch_status (bool)
+
+TaskExecutor ←→ VisionAnalyzer:
+  • image_path (string) → analysis_results (dict)
+  • detection_request (dict) → element_list (list)
+  • comparison_images (tuple) → similarity_score (float)
+
+TaskExecutor ←→ WebAutomator:
+  • url (string) → navigation_success (bool)
+  • form_data (dict) → submission_result (dict)
+  • selector (string) → element_found (bool)
+
+Cross-Module Dependencies:
+─────────────────────────
+
+ComputerAgent → VisionAnalyzer:
+  • screenshot_data (bytes) → ui_elements (list)
+  • image_region (tuple) → text_content (string)
+
+VisionAnalyzer → ClaudeClient:
+  • visual_context (dict) → ai_interpretation (string)
+  • detected_elements (list) → action_recommendations (list)
+
+WebAutomator → VisionAnalyzer:
+  • page_screenshot (bytes) → page_analysis (dict)
+  • element_image (bytes) → element_type (string)
+
+🎛️ CONFIGURATION CASCADE:
+──────────────────────────
+
+main.py
+  │
+  └→ TaskExecutor.__init__(config)
+      │
+      ├→ ClaudeClient.__init__(api_key)
+      ├→ ComputerAgent.__init__(screen_config)
+      ├→ VisionAnalyzer.__init__(ocr_config)  
+      ├→ WebAutomator.__init__(browser_config)
+      └→ TaskExecutor.set_components(all_modules)
+
+📋 ERROR HANDLING CHAIN:
+────────────────────────
+
+Any Module Error → TaskExecutor.handle_error()
+  │
+  ├→ Log error details
+  ├→ ClaudeClient.suggest_recovery()
+  ├→ Retry with modified approach
+  └→ Fallback to safe operation

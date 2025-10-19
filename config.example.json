@@ -1,0 +1,39 @@
+{
+    "anthropic_api_key": "your-claude-api-key-here",
+    "screenshot_path": "./screenshots",
+    "browser": "chrome",
+    "headless": false,
+    "wait_timeout": 10,
+    "debug_mode": true,
+    "confidence_threshold": 0.8,
+    "max_retries": 3,
+    "log_level": "INFO",
+    "web_driver_path": "",
+    "ocr_engine": "tesseract",
+    "vision_model": "claude-3-5-sonnet-20241022",
+    "claude_model": "claude-3-5-sonnet-20241022",
+    "max_tokens": 4000,
+    "task_timeout": 300,
+    "step_delay": 0.5,
+    "screenshot_on_error": true,
+    "auto_cleanup": true,
+    "allowed_domains": [],
+    "blocked_domains": [],
+    "user_agent": "PC-Agent/1.0 (Computer Automation)",
+    "window_size": {
+        "width": 1920,
+        "height": 1080
+    },
+    "element_detection": {
+        "button_min_size": 20,
+        "button_max_size": 300,
+        "text_confidence_threshold": 30,
+        "ocr_timeout": 10
+    },
+    "task_execution": {
+        "max_plan_steps": 20,
+        "step_retry_count": 2,
+        "critical_step_timeout": 60,
+        "abort_on_consecutive_failures": 3
+    }
+}

@@ -1,0 +1,65 @@
+# Core dependencies - Updated for Claude Sonnet 3.5
+anthropic>=0.34.0
+opencv-python>=4.9.0
+opencv-contrib-python>=4.9.0
+pillow>=10.4.0
+numpy>=1.26.0
+requests>=2.32.0
+
+# Web automation
+selenium>=4.15.0
+playwright>=1.40.0
+beautifulsoup4>=4.12.0
+
+# Computer vision and image processing
+pytesseract>=0.3.10
+screeninfo>=0.8.1
+
+# GUI automation (platform-specific)
+pyautogui>=0.9.54
+pynput>=1.7.6
+
+# macOS specific
+pyobjc-framework-Quartz>=10.0; sys_platform == "darwin"
+pyobjc-framework-ApplicationServices>=10.0; sys_platform == "darwin"
+
+# Windows specific
+pygetwindow>=0.0.9; sys_platform == "win32"
+pywin32>=306; sys_platform == "win32"
+
+# Linux specific
+python-xlib>=0.33; sys_platform == "linux"
+xvfbwrapper>=0.2.9; sys_platform == "linux"
+
+# Utilities
+rich>=13.0.0
+click>=8.1.0
+python-dotenv>=1.0.0
+pydantic>=2.0.0
+loguru>=0.7.0
+
+# Development and testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+black>=23.0.0
+flake8>=6.0.0
+
+# Advanced computer vision and AI
+torch>=2.1.0
+torchvision>=0.16.0
+transformers>=4.35.0
+ultralytics>=8.0.0
+mediapipe>=0.10.0
+face-recognition>=1.3.0
+dlib>=19.24.0
+
+# Enhanced image processing
+scikit-image>=0.22.0
+imageio>=2.34.0
+matplotlib>=3.8.0
+seaborn>=0.13.0
+
+# Advanced OCR and text detection
+easyocr>=1.7.0
+paddlepaddle>=2.5.0
+paddleocr>=2.7.0

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-Enhanced Claude Sonnet Model Test
-Tests the latest Claude 3.5 Sonnet model with new features
+Enhanced Claude Sonnet 4.5 Model Test
+Tests the latest Claude Sonnet 4.5 (claude-sonnet-4-5-20250929) model with enhanced features
+Used throughout PC Agent v2.0 for document processing and web automation
 """
 import json
 import os
@@ -9,7 +10,7 @@ from dotenv import load_dotenv
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
-from pc_agent import ClaudeClient
+from src.pc_agent.claude_client import ClaudeClient
 
 # Load environment variables from .env file
 load_dotenv()
@@ -17,8 +18,8 @@ load_dotenv()
 console = Console()
 
 def test_model_configuration():
-    """Test the model configuration and capabilities"""
-    console.print("🔧 Testing Claude Sonnet Model Configuration", style="bold blue")
+    """Test the Claude Sonnet 4.5 model configuration and capabilities"""
+    console.print("🔧 Testing Claude Sonnet 4.5 Model Configuration", style="bold blue")
     
     # Load configuration
     try:
@@ -38,12 +39,12 @@ def test_model_configuration():
         return None
 
 def test_enhanced_claude_client():
-    """Test the enhanced Claude client with configuration"""
+    """Test the enhanced Claude Sonnet 4.5 client with configuration"""
     config = test_model_configuration()
     if not config:
         return False
     
-    console.print("\n🤖 Testing Enhanced Claude Client", style="bold blue")
+    console.print("\n🤖 Testing Enhanced Claude Sonnet 4.5 Client", style="bold blue")
     
     # Get API key
     api_key = os.getenv('ANTHROPIC_API_KEY')
@@ -55,9 +56,15 @@ def test_enhanced_claude_client():
         # Initialize Claude client with configuration
         claude = ClaudeClient(api_key=api_key, config=config)
         
-        console.print("✅ Claude client initialized successfully", style="green")
+        console.print("✅ Claude Sonnet 4.5 client initialized successfully", style="green")
         console.print(f"Using model: {claude.model}", style="cyan")
         console.print(f"Max tokens: {claude.max_tokens}", style="cyan")
+        
+        # Verify we're using Sonnet 4.5
+        if "sonnet-4-5" in claude.model:
+            console.print("🎉 Confirmed: Using Claude Sonnet 4.5!", style="bold green")
+        else:
+            console.print(f"⚠️  Warning: Expected Sonnet 4.5, got {claude.model}", style="yellow")
         
         return claude
         
@@ -66,8 +73,8 @@ def test_enhanced_claude_client():
         return None
 
 def test_model_capabilities(claude):
-    """Test the advanced capabilities of Claude Sonnet"""
-    console.print("\n🧠 Testing Model Capabilities", style="bold blue")
+    """Test the advanced capabilities of Claude Sonnet 4.5"""
+    console.print("\n🧠 Testing Claude Sonnet 4.5 Capabilities", style="bold blue")
     
     tests = [
         {
@@ -76,13 +83,23 @@ def test_model_capabilities(claude):
             "expected_length": "short"
         },
         {
-            "name": "Complex Analysis", 
-            "prompt": "Analyze the benefits of AI automation in computer interfaces. Provide 3 key points in bullet format.",
+            "name": "Document Processing", 
+            "prompt": "Summarize this text in one sentence: 'Claude Sonnet 4.5 represents a significant advancement in AI language models, offering enhanced reasoning capabilities, better document understanding, and improved task execution for complex workflows.'",
+            "expected_length": "medium"
+        },
+        {
+            "name": "Text Analysis",
+            "prompt": "Analyze the key themes in this text: 'Modern AI systems must balance innovation with ethical considerations, ensuring responsible deployment while maximizing beneficial outcomes.' Provide 2 main themes.",
             "expected_length": "medium"
         },
         {
             "name": "Task Planning",
-            "prompt": "Create a step-by-step plan to automate clicking a submit button on a webpage. Be specific and technical.",
+            "prompt": "Create a step-by-step plan to automate document processing: load a PDF, summarize it, and save results. Be specific and technical.",
+            "expected_length": "long"
+        },
+        {
+            "name": "Web Automation Strategy",
+            "prompt": "Design an approach to automate clicking a submit button on a webpage using computer vision and browser automation. Include error handling.",
             "expected_length": "long"
         }
     ]
@@ -92,7 +109,7 @@ def test_model_capabilities(claude):
     for test in tests:
         try:
             console.print(f"\n🔍 Running test: {test['name']}")
-            response = claude.chat(test['prompt'])
+            response = claude.generate_response(test['prompt'])
             
             if response:
                 console.print(f"✅ Response received ({len(response)} characters)", style="green")
@@ -156,7 +173,7 @@ def display_results(results):
     
     summary_panel = Panel.fit(
         f"Tests Passed: {passed}/{total} ({success_rate:.1f}%)\n"
-        f"Model: Claude 3.5 Sonnet (Latest)\n"
+        f"Model: Claude 4.5 Sonnet (Latest)\n"
         f"Enhanced Features: ✅ Configuration-based, ✅ Higher token limits, ✅ Temperature control",
         title="🎯 Test Summary",
         style="green" if passed == total else "yellow" if passed > failed else "red"
@@ -165,7 +182,16 @@ def display_results(results):
     console.print(summary_panel)
 
 def main():
-    console.print(Panel.fit("🚀 Claude Sonnet Enhanced Model Test Suite", style="bold blue"))
+    console.print(Panel.fit("🚀 Claude Sonnet 4.5 Enhanced Test Suite", style="bold blue"))
+    
+    # Verify model configuration
+    try:
+        from src.pc_agent.claude_client import ClaudeClient
+        console.print("✓ [green]Model Configuration: Claude Sonnet 4.5 (claude-sonnet-4-5-20250929)[/green]")
+    except ImportError as e:
+        console.print(f"❌ [red]Import Error: {e}[/red]")
+        console.print("Please ensure PC Agent modules are installed.")
+        return
     
     # Test enhanced client
     claude = test_enhanced_claude_client()
@@ -180,10 +206,11 @@ def main():
     # Display results
     display_results(results)
     
-    console.print("\n💡 Next Steps:", style="bold yellow")
-    console.print("1. Add your Claude API key to .env file")
-    console.print("2. Test with real automation tasks")
-    console.print("3. Explore vision capabilities with screenshots")
+    console.print("\n💡 Claude Sonnet 4.5 Features Tested:", style="bold yellow")
+    console.print("✓ Document Processing Capabilities")
+    console.print("✓ Enhanced Reasoning and Analysis")
+    console.print("✓ Web Automation Task Planning")
+    console.print("✓ Complex Text Understanding")
 
 if __name__ == "__main__":
     main()

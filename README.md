@@ -1,15 +1,17 @@
 # PC Agent with Claude
 
-A powerful computer-using agent that can interact with computer interfaces, perform web searches, navigate pages, and execute complex tasks using AI decision-making powered by Claude API.
+A powerful computer-using agent that can interact with computer interfaces, perform web searches, navigate pages, execute complex tasks, and process documents using AI decision-making powered by Claude Sonnet 4.5 API.
 
 ## Features
 
 - 🖥️ **Screen Interaction**: Capture screenshots, detect UI elements, click, scroll, and type
 - 🌐 **Web Automation**: Browse websites, navigate pages, fill forms, and interact with web elements
+- 📄 **Document Processing**: AI-powered document summarization, rewriting, and analysis with interactive file browser
 - 🔍 **Computer Vision**: Analyze screen content and identify interactive elements
-- 🤖 **AI-Powered**: Uses Claude API for intelligent decision making and task planning
+- 🤖 **AI-Powered**: Uses Claude Sonnet 4.5 API for intelligent decision making and task planning
 - 📋 **Task Execution**: Plan and execute complex multi-step computer tasks
 - 🎯 **Element Detection**: Smart UI element recognition and interaction
+- 📁 **File Browser**: Interactive document selection with directory navigation
 
 ## Installation
 
@@ -27,6 +29,16 @@ cp config.example.json config.json
 
 ## Quick Start
 
+### Document Processing
+```bash
+# Interactive document processor
+python document_processor.py
+
+# Run comprehensive demo
+python demo_document_processing.py
+```
+
+### Computer Automation
 ```python
 from src.pc_agent import ComputerAgent
 
@@ -42,7 +54,48 @@ agent.click_element("first search result")
 agent.scroll_page("down", 3)
 ```
 
+### Document Processing API
+```python
+from document_processor import DocumentProcessor, SummaryStyle
+
+# Initialize processor
+processor = DocumentProcessor()
+
+# Load and summarize a document
+document = processor.load_document('path/to/document.txt')
+result = processor.summarize_document(document, SummaryStyle.EXECUTIVE)
+
+# Rewrite document in different style
+rewrite_result = processor.rewrite_document(document, RewriteStyle.PROFESSIONAL)
+
+# Analyze multiple documents
+analysis = processor.analyze_multiple_documents([doc1, doc2], 'comparison')
+```
+
 ## Usage Examples
+
+### Document Processing
+```python
+# Interactive file browser and document processing
+from document_processor import DocumentProcessor
+
+processor = DocumentProcessor()
+
+# Browse and select documents interactively
+selected_file = processor.browse_and_select_document()
+document = processor.load_document(selected_file)
+
+# Summarize with different styles
+executive_summary = processor.summarize_document(document, SummaryStyle.EXECUTIVE)
+bullet_summary = processor.summarize_document(document, SummaryStyle.BULLET)
+
+# Rewrite documents
+professional_version = processor.rewrite_document(document, RewriteStyle.PROFESSIONAL)
+academic_version = processor.rewrite_document(document, RewriteStyle.ACADEMIC)
+
+# Multi-document analysis
+comparison = processor.analyze_multiple_documents([doc1, doc2], 'comparison')
+```
 
 ### Basic Screen Interaction
 ```python
@@ -108,6 +161,27 @@ Create a `config.json` file with your settings:
 
 ## API Reference
 
+### DocumentProcessor Class
+
+#### Document Loading and Processing
+- `browse_and_select_document()` - Interactive file browser
+- `load_document(file_path)` - Load document from file
+- `summarize_document(document, style, length)` - AI-powered summarization
+- `rewrite_document(document, style, instructions)` - Document rewriting
+- `analyze_multiple_documents(documents, analysis_type)` - Multi-document analysis
+- `save_result(result, filename)` - Save results in JSON/Markdown
+
+#### Supported Styles
+- **Summary Styles**: brief, executive, bullet, detailed, academic, narrative
+- **Rewrite Styles**: professional, academic, casual, technical, creative
+- **Analysis Types**: comparison, synthesis, themes, summary
+
+#### Supported File Formats
+- Text files (.txt)
+- Markdown files (.md)
+- PDF documents (.pdf)
+- Word documents (.docx, .doc)
+
 ### ComputerAgent Class
 
 #### Screen Interaction Methods
@@ -136,13 +210,39 @@ See the `examples/` directory for complete usage examples:
 - `web_automation.py` - Web browsing and form filling
 - `complex_tasks.py` - Multi-step task execution
 - `vision_analysis.py` - Computer vision and screen analysis
+- `demo_document_processing.py` - Comprehensive document processing demo
+
+### Document Processing Examples
+
+#### Interactive Mode
+```bash
+# Launch interactive document processor
+python document_processor.py
+```
+
+#### Programmatic Usage
+```python
+# Batch document processing
+from document_processor import DocumentProcessor, SummaryStyle, RewriteStyle
+
+processor = DocumentProcessor()
+
+# Process multiple documents
+documents = ['doc1.txt', 'doc2.pdf', 'doc3.docx']
+for doc_path in documents:
+    doc = processor.load_document(doc_path)
+    summary = processor.summarize_document(doc, SummaryStyle.EXECUTIVE)
+    processor.save_result(summary, f"summary_{doc['file_name']}")
+```
 
 ## Requirements
 
 - Python 3.8+
 - OpenCV for computer vision
 - Selenium/Playwright for web automation
-- Anthropic API access for Claude integration
+- Anthropic API access for Claude Sonnet 4.5 integration
+- Document processing libraries (PyPDF2, python-docx, openpyxl)
+- Rich console library for enhanced UI
 - Platform-specific dependencies (see requirements.txt)
 
 ## License

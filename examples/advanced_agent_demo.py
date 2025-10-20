@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-Advanced Computer Agent Example with Claude Sonnet 3.5
+Advanced Computer Agent Example with Claude Sonnet 4.5
 Demonstrates advanced computer vision and AI-powered task automation
+Powered by Claude Sonnet 4.5 (claude-sonnet-4-5-20250929) for superior performance
 """
 
 import os
@@ -19,7 +20,7 @@ from pc_agent import ComputerAgent
 def main():
     """Main example demonstrating advanced computer agent capabilities"""
     
-    print("🤖 Advanced PC Agent with Claude Sonnet 3.5")
+    print("🤖 Advanced PC Agent with Claude Sonnet 4.5")
     print("=" * 50)
     
     # Check if config exists

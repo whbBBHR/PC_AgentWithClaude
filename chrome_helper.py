@@ -72,7 +72,7 @@ def show_current_options():
     
     console.print("Option 3: Demo Mode (Works Now)")
     console.print("   🎯 Full feature demonstration")
-    console.print("   🧠 Claude 3.5 planning active")
+    console.print("   🧠 Claude Sonnet 4.5 planning active")
     console.print("   📊 All capabilities shown")
     console.print("   Run: python web_automation_demo.py")
 

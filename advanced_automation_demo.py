@@ -1,8 +1,26 @@
 #!/usr/bin/env python3
 """
-Advanced Claude 3.5 Sonnet Automation Demo
-Demonstrates real computer automation capabilities
+Advanced Claude Sonnet 4.5 Automation Demo
+Production-ready automation with Claude Sonnet 4.5 guiding complex multi-step tasks
 """
+
+import asyncio
+import time
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, Any, List, Optional
+
+from rich.console import Console
+from rich.panel import Panel
+from rich.table import Table
+from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TimeElapsedColumn
+
+console = Console()
+
+
+def demonstrate_advanced_task_planning():
+    """Demonstrate advanced task planning with Claude Sonnet 4.5"""
+    console.print(Panel.fit("🧠 Advanced Task Planning with Claude Sonnet 4.5", style="bold cyan"))
 
 import json
 import time
@@ -35,10 +53,9 @@ def demo_task_planning():
     claude = ClaudeClient("demo_key", config)
     
     # Example complex task
-    task_description = """
-    Open a web browser, navigate to Google, search for 'Claude 3.5 Sonnet capabilities', 
-    click on the first result, take a screenshot, and summarize the key findings about 
-    Claude's vision and reasoning capabilities.
+    task = """
+    Open a web browser, navigate to Google, search for 'Claude Sonnet 4.5 capabilities', 
+    analyze the first 3 results, take screenshots, and generate a summary report.
     """
     
     console.print(f"[bold yellow]Task:[/] {task_description}")
@@ -51,12 +68,12 @@ def demo_task_planning():
     plan_steps = [
         "🌐 Initialize web browser with optimal settings",
         "📍 Navigate to Google search engine", 
-        "⌨️  Enter search query: 'Claude 3.5 Sonnet capabilities'",
+        "⌨️  Enter search query: 'Claude Sonnet 4.5 capabilities'",
         "🔍 Execute search and analyze results",
         "👆 Click on the most relevant first result",
         "⏱️  Wait for page load with intelligent timeout",
         "📸 Capture high-quality screenshot",
-        "👁️  Analyze screenshot using Claude 3.5 vision",
+        "👁️  Analyze screenshot using Claude Sonnet 4.5 vision",
         "🧠 Process content with 8192 token capacity",
         "📝 Generate comprehensive summary with 0.1 precision"
     ]
@@ -73,7 +90,7 @@ def demo_task_planning():
 
 def demo_vision_analysis():
     """Demonstrate enhanced vision analysis capabilities"""
-    console.print(Panel.fit("👁️ Enhanced Vision Analysis with Claude 3.5 Sonnet", style="bold magenta"))
+    console.print(Panel.fit("👁️ Enhanced Vision Analysis with Claude Sonnet 4.5", style="bold magenta"))
     
     config = load_enhanced_config()
     claude = ClaudeClient("demo_key", config) 
@@ -99,7 +116,7 @@ def demo_vision_analysis():
 
 def demo_web_automation():
     """Demonstrate advanced web automation"""
-    console.print(Panel.fit("🌐 Advanced Web Automation with Claude 3.5 Sonnet", style="bold green"))
+    console.print(Panel.fit("🌐 Advanced Web Automation with Claude Sonnet 4.5", style="bold green"))
     
     config = load_enhanced_config()
     
@@ -123,7 +140,7 @@ def demo_web_automation():
 
 def demo_desktop_control():
     """Demonstrate desktop automation capabilities"""
-    console.print(Panel.fit("💻 Desktop Control with Claude 3.5 Sonnet", style="bold blue"))
+    console.print(Panel.fit("💻 Desktop Control with Claude Sonnet 4.5", style="bold blue"))
     
     config = load_enhanced_config()
     
@@ -152,7 +169,7 @@ def demo_full_integration():
     console.print("[bold yellow]Integrated Workflow Example:[/]")
     
     workflow_steps = [
-        ("🎯", "Task Analysis", "Claude 3.5 analyzes complex automation request"),
+        ("🎯", "Task Analysis", "Claude Sonnet 4.5 analyzes complex automation request"),
         ("📋", "Planning Phase", "Generate optimal execution plan with 8192 tokens"),
         ("👁️", "Vision Setup", "Initialize enhanced screenshot analysis"),
         ("🌐", "Web Prep", "Launch browser with intelligent configuration"),
@@ -168,7 +185,7 @@ def demo_full_integration():
 
 def main():
     """Run the advanced automation demonstration"""
-    console.print(Panel.fit("🚀 Advanced Claude 3.5 Sonnet Automation Demo", style="bold white"))
+    console.print(Panel.fit("🚀 Advanced Claude Sonnet 4.5 Automation Demo", style="bold white"))
     
     with Progress(
         SpinnerColumn(),

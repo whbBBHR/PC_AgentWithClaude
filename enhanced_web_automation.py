@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-Enhanced Web Automation with Smart Browser Detection - Production Ready
-Automatic browser detection, WebDriver management, and robust error handling
+Enhanced Web Automation with Claude Sonnet 4.5 Intelligence - Production Ready
+Smart browser detection, WebDriver management, and robust error handling
+Powered by Claude Sonnet 4.5 (claude-sonnet-4-5-20250929) for intelligent automation
 """
 
 import os

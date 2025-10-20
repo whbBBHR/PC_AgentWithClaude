@@ -1,10 +1,10 @@
-# PC Agent with Claude - Advanced Computer Vision Guide
+# PC Agent with Claude Sonnet 4.5 - Advanced Computer Vision Guide
 
 ## Overview
 
-This PC Agent integrates with **Claude Sonnet 3.5** to provide intelligent computer automation with advanced computer vision capabilities. The agent can understand screen content, plan complex tasks, and execute them autonomously.
+This PC Agent integrates with **Claude Sonnet 4.5** to provide intelligent computer automation with advanced computer vision capabilities. The agent can understand screen content, plan complex tasks, and execute them autonomously.
 
-## Key Features with Claude Sonnet 3.5
+## Key Features with Claude Sonnet 4.5
 
 ### 🧠 AI-Powered Decision Making
 - **Task Planning**: Claude analyzes your natural language requests and creates step-by-step execution plans
@@ -22,7 +22,7 @@ This PC Agent integrates with **Claude Sonnet 3.5** to provide intelligent compu
 - **Desktop Interaction**: Click, type, scroll, and navigate desktop applications
 - **Multi-Step Tasks**: Execute complex workflows with error handling and retries
 
-## Configuration for Claude Sonnet 3.5
+## Configuration for Claude Sonnet 4.5
 
 ### API Setup
 
@@ -32,9 +32,9 @@ This PC Agent integrates with **Claude Sonnet 3.5** to provide intelligent compu
    ```json
    {
      "anthropic_api_key": "your-claude-api-key-here",
-     "claude_model": "claude-3-5-sonnet-20241022",
-     "vision_model": "claude-3-5-sonnet-20241022",
-     "max_tokens": 4000,
+     "claude_model": "claude-sonnet-4-5-20250929",
+     "vision_model": "claude-sonnet-4-5-20250929",
+     "max_tokens": 8192,
      "screenshot_path": "./screenshots",
      "debug_mode": true
    }
@@ -42,11 +42,12 @@ This PC Agent integrates with **Claude Sonnet 3.5** to provide intelligent compu
 
 ### Model Selection
 
-The agent is optimized for **Claude 3.5 Sonnet** which provides:
-- **Superior vision capabilities** for screen analysis
-- **Better reasoning** for complex task planning
-- **Faster response times** compared to Claude 3 Opus
-- **Cost-effective** for automation workloads
+The agent is optimized for **Claude Sonnet 4.5** which provides:
+- **Enhanced vision capabilities** with superior screen analysis accuracy
+- **Advanced reasoning** for complex multi-step task planning
+- **Improved response times** and efficiency over previous models
+- **Expanded context window** (8192 tokens) for better task understanding
+- **Cost-effective** performance for automation workloads
 
 ## Advanced Computer Vision Capabilities
 

@@ -1,4 +1,5 @@
-# Core dependencies - Updated for Claude Sonnet 3.5 (Latest)
+# Core dependencies - Updated for Claude Sonnet 4.5 (Latest)
+# Optimized for claude-sonnet-4-5-20250929 model capabilities
 anthropic>=0.71.0
 opencv-python>=4.9.0
 opencv-contrib-python>=4.9.0

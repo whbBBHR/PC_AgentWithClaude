@@ -1,0 +1,11 @@
+# Core Dependencies
+selenium>=4.15.0
+webdriver-manager>=4.0.0
+rich>=13.0.0
+python-dotenv>=1.0.0
+
+# Optional Dependencies (for full features)
+# Uncomment if needed:
+# pillow>=10.0.0              # For image processing
+# pandas>=2.0.0               # For data analysis
+# requests>=2.31.0            # For API calls

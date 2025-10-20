@@ -421,9 +421,14 @@ class SafeWebAutomator:
         timeout = timeout or self.config.get('wait_timeout', 10)
         
         try:
-            element = self.automator.wait_for_element(selector, timeout)
-            self.session.log_action("wait_for_element", True, f"Found: {selector}")
-            return element is not None
+            # Wait for element to be visible, then find it
+            if self.automator.wait_for_element_visible(selector, timeout=timeout):
+                element = self.automator.find_element(selector)
+                self.session.log_action("wait_for_element", True, f"Found: {selector}")
+                return element is not None
+            else:
+                self.session.log_action("wait_for_element", False, f"Not visible: {selector}")
+                return False
         except TimeoutException:
             logger.warning(f"Element '{selector}' not found within {timeout}s")
             self.session.log_action("wait_for_element", False, f"Timeout: {selector}")
@@ -443,11 +448,13 @@ class SafeWebAutomator:
         
         for selector in selectors:
             try:
-                element = self.automator.wait_for_element(selector, timeout=timeout_per_selector)
-                if element:
-                    logger.info(f"Element found with selector: {selector}")
-                    self.session.log_action("wait_advanced", True, f"Found: {selector}")
-                    return element
+                # First wait for element to be visible, then find it
+                if self.automator.wait_for_element_visible(selector, timeout=timeout_per_selector):
+                    element = self.automator.find_element(selector)
+                    if element:
+                        logger.info(f"Element found with selector: {selector}")
+                        self.session.log_action("wait_advanced", True, f"Found: {selector}")
+                        return element
             except TimeoutException:
                 continue
             except Exception as e:
@@ -521,14 +528,14 @@ class SafeWebAutomator:
             return False
         
         try:
-            success = self.automator.type_in_element(selector, text, clear_first)
+            success = self.automator.type_in_element(selector, text, clear_first=clear_first)
             self.session.log_action("type_text", success, f"Typed in {selector}")
             return success
         except StaleElementReferenceException:
             logger.warning("Element became stale, retrying...")
             time.sleep(0.5)
             try:
-                success = self.automator.type_in_element(selector, text, clear_first)
+                success = self.automator.type_in_element(selector, text, clear_first=clear_first)
                 self.session.log_action("type_text", success, f"Typed (retry) in {selector}")
                 return success
             except Exception as e:

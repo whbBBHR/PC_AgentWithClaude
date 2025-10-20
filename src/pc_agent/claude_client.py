@@ -1,5 +1,7 @@
 """
-Claude Client - Interface for Claude API integration
+Claude Client - Interface for Claude Sonnet 4.5 API integration
+Enhanced with the latest Claude Sonnet 4.5 model (claude-sonnet-4-5-20250929) 
+for superior task planning, vision analysis, and automation guidance.
 """
 
 import anthropic
@@ -25,10 +27,11 @@ class ClaudeClient:
         self.api_key = api_key or os.getenv('ANTHROPIC_API_KEY')
         self.client = None
         
-        # Load configuration with latest model defaults
+        # Load configuration with Claude Sonnet 4.5 model defaults
+        # Using claude-sonnet-4-5-20250929 - Latest Claude Sonnet 4.5 model
         self.config = config or {}
-        self.model = self.config.get('claude_model', 'claude-sonnet-4-5-20250929')
-        self.vision_model = self.config.get('vision_model', 'claude-sonnet-4-5-20250929')
+        self.model = self.config.get('claude_model', 'claude-sonnet-4-5-20250929')  # Claude Sonnet 4.5 for text tasks
+        self.vision_model = self.config.get('vision_model', 'claude-sonnet-4-5-20250929')  # Claude Sonnet 4.5 with vision capabilities
         self.max_tokens = self.config.get('max_tokens', 8192)
         self.temperature = self.config.get('temperature', 0.1)
         

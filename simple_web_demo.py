@@ -27,7 +27,7 @@ def load_config():
 
 def demo_web_automation_planning():
     """Demonstrate Claude's web automation planning capabilities"""
-    console.print(Panel.fit("🧠 Claude 3.5 Web Automation Planning", style="bold cyan"))
+    console.print(Panel.fit("🧠 Claude Sonnet 4.5 Web Automation Planning", style="bold cyan"))
     
     try:
         config = load_config()
@@ -41,7 +41,7 @@ def demo_web_automation_planning():
         # Initialize Claude for web automation planning
         claude = ClaudeClient(api_key=api_key, config=config)
         
-        console.print("✅ Claude 3.5 web planning active")
+        console.print("✅ Claude Sonnet 4.5 web planning active")
         console.print(f"   Model: {claude.model}")
         console.print(f"   Max tokens: {claude.max_tokens}")
         
@@ -109,7 +109,7 @@ def demo_web_automation_planning():
                 console.print(f"   {i}. {step.get('description', 'Form step')}")
         
         console.print(Panel.fit(
-            "🎉 Claude 3.5 Web Planning Success!\n\n"
+            "🎉 Claude Sonnet 4.5 Web Planning Success!\n\n"
             "✅ E-commerce automation planning\n"
             "✅ Research workflow generation\n" 
             "✅ Form completion strategies\n"
@@ -191,7 +191,7 @@ def show_web_automation_architecture():
     console.print(Panel.fit("🏗️ Web Automation System Architecture", style="bold blue"))
     
     architecture = {
-        "🧠 Claude 3.5 AI Layer": [
+        "🧠 Claude Sonnet 4.5 AI Layer": [
             "Task planning and strategy generation",
             "Context-aware decision making", 
             "Error recovery and adaptation",
@@ -230,7 +230,7 @@ def show_web_automation_architecture():
 
 def main():
     """Main function"""
-    console.print(Panel.fit("🌐 Web Automation with Claude 3.5", style="bold white"))
+    console.print(Panel.fit("🌐 Web Automation with Claude Sonnet 4.5", style="bold white"))
     
     # Show architecture
     show_web_automation_architecture()
@@ -244,7 +244,7 @@ def main():
     console.print(Panel.fit(
         "🚀 Ready for Live Web Automation!\n\n"
         "Your system includes:\n"
-        "✅ Claude 3.5 Haiku for intelligent planning\n"
+        "✅ Claude Sonnet 4.5 for intelligent planning\n"
         "✅ Selenium WebDriver for browser control\n"
         "✅ Multi-browser support (Chrome, Firefox)\n"
         "✅ Advanced element detection strategies\n"

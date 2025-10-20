@@ -27,8 +27,8 @@ class ClaudeClient:
         
         # Load configuration with latest model defaults
         self.config = config or {}
-        self.model = self.config.get('claude_model', 'claude-3-5-sonnet-20241022')
-        self.vision_model = self.config.get('vision_model', 'claude-3-5-sonnet-20241022')
+        self.model = self.config.get('claude_model', 'claude-sonnet-4-5-20250929')
+        self.vision_model = self.config.get('vision_model', 'claude-sonnet-4-5-20250929')
         self.max_tokens = self.config.get('max_tokens', 8192)
         self.temperature = self.config.get('temperature', 0.1)
         

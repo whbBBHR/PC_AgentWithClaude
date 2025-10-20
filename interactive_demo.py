@@ -3,24 +3,29 @@
 Interactive Web Automation Demo Script
 Shows how to use the manual interactive shell for real user input
 
-USER SETUP: Before running, update the project_path variable on line ~65
-to match your actual PC_AgentWithClaude directory location.
+AUTO-DETECTION: Script automatically detects project directory location.
+No manual path configuration required!
 """
 
 import subprocess
 import sys
 import time
+import os
+from pathlib import Path
 
 def main():
     print("🌐 Interactive Web Automation Demo")
     print("=" * 50)
-    print("⚠️  USER SETUP REQUIRED: Update the project_path variable in this script")
-    print("   to match your PC_AgentWithClaude directory location.")
+    print("✅ AUTO-DETECTION: Project path automatically detected!")
+    print(f"   📂 Location: {Path(__file__).parent.absolute()}")
     print()
+    # Auto-detect current project path
+    current_project_path = Path(__file__).parent.absolute()
+    
     print("📋 To run the TRULY INTERACTIVE shell where you can type commands:")
     print("   1. Open a terminal")
     print("   2. Navigate to the project directory:")
-    print("      cd /path/to/your/PC_AgentWithClaude")
+    print(f"      cd {current_project_path}")
     print("   3. Run the manual interactive shell:")
     print("      python manual_interactive_automation.py")
     print()
@@ -69,12 +74,14 @@ def main():
             print()
             
             # Launch the interactive shell
-            # Note: Update the path below to match your project location
-            project_path = "/path/to/your/PC_AgentWithClaude"  # <-- USER: Update this path
+            # Automatically detect the current project directory
+            project_path = Path(__file__).parent.absolute()
+            print(f"📂 Using project path: {project_path}")
+            
             subprocess.run([
                 sys.executable, 
                 "manual_interactive_automation.py"
-            ], cwd=project_path)
+            ], cwd=str(project_path))
         else:
             print("👋 Demo completed. Run the command above when ready!")
     except KeyboardInterrupt:

@@ -11,10 +11,36 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
+# Auto webdriver management
+try:
+    from webdriver_manager.chrome import ChromeDriverManager
+    from webdriver_manager.firefox import GeckoDriverManager
+    from selenium.webdriver.chrome.service import Service as ChromeService
+    from selenium.webdriver.firefox.service import Service as FirefoxService
+    WEBDRIVER_MANAGER_AVAILABLE = True
+except ImportError:
+    WEBDRIVER_MANAGER_AVAILABLE = False
+
 import time
 from typing import Dict, List, Optional, Any
 from urllib.parse import quote_plus
 from loguru import logger
+
+
+class WebAutomatorConfig:
+    """Configuration wrapper for WebAutomator"""
+    def __init__(self, config_dict):
+        if isinstance(config_dict, dict):
+            self.browser = config_dict.get('browser', 'chrome')
+            self.headless = config_dict.get('headless', False)
+            self.wait_timeout = config_dict.get('wait_timeout', 10)
+            self.max_retries = config_dict.get('max_retries', 3)
+        else:
+            # Already a config object
+            self.browser = getattr(config_dict, 'browser', 'chrome')
+            self.headless = getattr(config_dict, 'headless', False)
+            self.wait_timeout = getattr(config_dict, 'wait_timeout', 10)
+            self.max_retries = getattr(config_dict, 'max_retries', 3)
 
 
 class WebAutomator:
@@ -22,7 +48,7 @@ class WebAutomator:
     
     def __init__(self, config):
         """Initialize web automator"""
-        self.config = config
+        self.config = WebAutomatorConfig(config)
         self.driver = None
         self.wait = None
         
@@ -41,15 +67,50 @@ class WebAutomator:
                 options.add_argument("--no-sandbox")
                 options.add_argument("--disable-dev-shm-usage")
                 options.add_argument("--disable-gpu")
+                options.add_argument("--disable-blink-features=AutomationControlled")
+                options.add_experimental_option("excludeSwitches", ["enable-automation"])
+                options.add_experimental_option('useAutomationExtension', False)
                 
-                self.driver = webdriver.Chrome(options=options)
+                if WEBDRIVER_MANAGER_AVAILABLE:
+                    service = ChromeService(ChromeDriverManager().install())
+                    self.driver = webdriver.Chrome(service=service, options=options)
+                else:
+                    self.driver = webdriver.Chrome(options=options)
                 
             elif browser == "firefox":
                 options = FirefoxOptions()
                 if self.config.headless:
                     options.add_argument("--headless")
                     
-                self.driver = webdriver.Firefox(options=options)
+                if WEBDRIVER_MANAGER_AVAILABLE:
+                    service = FirefoxService(GeckoDriverManager().install())
+                    self.driver = webdriver.Firefox(service=service, options=options)
+                else:
+                    self.driver = webdriver.Firefox(options=options)
+                    
+            elif browser == "safari":
+                # Safari WebDriver (built into macOS)
+                self.driver = webdriver.Safari()
+                logger.info("Safari WebDriver initialized (headless not supported)")
+                
+            elif browser == "auto":
+                # Auto-detect available browser
+                import platform
+                if platform.system() == "Darwin":  # macOS
+                    try:
+                        self.driver = webdriver.Safari()
+                        logger.info("Auto-selected Safari WebDriver for macOS")
+                    except Exception as safari_error:
+                        logger.warning(f"Safari failed: {safari_error}, trying Chrome...")
+                        # Fallback to Chrome with webdriver manager
+                        if WEBDRIVER_MANAGER_AVAILABLE:
+                            options = ChromeOptions()
+                            options.add_argument("--no-sandbox")
+                            options.add_argument("--disable-dev-shm-usage")
+                            service = ChromeService(ChromeDriverManager().install())
+                            self.driver = webdriver.Chrome(service=service, options=options)
+                        else:
+                            raise Exception("No suitable browser found")
                 
             else:
                 logger.error(f"Unsupported browser: {browser}")

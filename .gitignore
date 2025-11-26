@@ -70,6 +70,12 @@ screenshots/
 temp/
 tmp/
 
+# Document processing results (may contain personal info)
+document_results/
+*.pdf
+*WAYNE*.json
+*WAYNE*.md
+
 # Testing
 .coverage
 .pytest_cache/

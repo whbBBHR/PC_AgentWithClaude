@@ -54,6 +54,11 @@ class InteractiveWebAutomationService:
         try:
             console.print("🚀 Initializing Interactive Web Automation Service...", style="bold blue")
             self.automator = SafeWebAutomator(self.config, self.session)
+            
+            # Initialize the automator
+            if not self.automator.initialize():
+                raise Exception("Failed to initialize web automator")
+            
             self.status = "Ready"
             console.print("✅ Service initialized successfully!", style="green")
             return True
@@ -81,9 +86,10 @@ class InteractiveWebAutomationService:
         
         # Session metrics
         if self.session:
-            status_text.append(f"📊 Actions: {len(self.session.actions)} | ")
-            status_text.append(f"Errors: {len(self.session.errors)} | ")
-            status_text.append(f"Success Rate: {self.session.get_success_rate():.1f}%")
+            summary = self.session.get_summary()
+            status_text.append(f"📊 Actions: {summary['total_actions']} | ")
+            status_text.append(f"Errors: {summary['total_errors']} | ")
+            status_text.append(f"Success Rate: {summary['success_rate']:.1f}%")
         
         if self.last_action:
             status_text.append(f"\n🕐 Last Action: {self.last_action}")

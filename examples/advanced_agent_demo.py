@@ -17,6 +17,42 @@ sys.path.append(str(Path(__file__).parent.parent / "src"))
 from pc_agent import ComputerAgent
 
 
+def recover_navigation(agent, url, max_attempts=3):
+    """Attempt navigation with automatic recovery from failures"""
+    for attempt in range(max_attempts):
+        try:
+            # Ensure web automator exists
+            if not hasattr(agent, 'web_automator') or agent.web_automator is None:
+                print(f"🔄 Initializing web automator (attempt {attempt + 1})...")
+                agent.initialize_web_automator()
+                time.sleep(2)
+            
+            # Try navigation
+            if agent.navigate_to(url):
+                print("✅ Navigation successful!")
+                return True
+            
+            # Failed - cleanup and retry
+            print(f"⚠️  Navigation failed (attempt {attempt + 1}/{max_attempts})")
+            if attempt < max_attempts - 1:
+                print("🔄 Reinitializing web automator...")
+                try:
+                    agent.web_automator.cleanup()
+                except:
+                    pass
+                agent.web_automator = None
+                time.sleep(3)
+                
+        except Exception as e:
+            print(f"❌ Error on attempt {attempt + 1}: {e}")
+            if attempt < max_attempts - 1:
+                time.sleep(3)
+    
+    print("❌ All navigation attempts failed")
+    print("💡 See NAVIGATION_TROUBLESHOOTING.md for help")
+    return False
+
+
 def main():
     """Main example demonstrating advanced computer agent capabilities"""
     
@@ -126,9 +162,14 @@ def demonstrate_web_automation(agent):
     print("-" * 40)
     
     try:
+        # Ensure web automator is initialized
+        if not hasattr(agent, 'web_automator') or agent.web_automator is None:
+            print("⚠️  Initializing web automator...")
+            agent.initialize_web_automator()
+        
         # Navigate to a search engine
         print("🔗 Opening web browser...")
-        success = agent.navigate_to("https://www.google.com")
+        success = recover_navigation(agent, "https://www.google.com")
         
         if success:
             print("✅ Browser opened successfully")
@@ -156,10 +197,17 @@ def demonstrate_web_automation(agent):
             else:
                 print("❌ Search failed")
         else:
-            print("❌ Failed to open browser")
+            print("⚠️  Failed to open browser - checking connection...")
+            print("💡 Possible causes:")
+            print("   • Browser window was closed manually")
+            print("   • WebDriver session expired")
+            print("   • Network connection issue")
+            print("   • URL blocked or timeout")
+            print("\n🔄 Try reinitializing the agent or checking your browser settings")
             
     except Exception as e:
         print(f"❌ Web automation failed: {e}")
+        print("💡 Tip: Make sure Safari/Chrome is properly configured for automation")
 
 
 def demonstrate_ai_task_planning(agent):

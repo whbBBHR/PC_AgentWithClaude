@@ -52,15 +52,21 @@ def test_claude_connection(api_key):
         # Create Claude client with the API key
         claude = ClaudeClient(api_key=api_key)
         
-        # Test with a simple message
-        response = claude.chat("Hello! Can you respond with just 'API test successful'?")
+        # Use the test_connection method
+        result = claude.test_connection()
         
-        console.print("✅ Claude API connection successful!", style="green")
-        console.print(f"Response: {response}", style="blue")
-        return True
+        if result.get("status") == "success":
+            console.print("✅ Claude API connection successful!", style="green")
+            console.print(f"Model: {result.get('model', 'Unknown')}", style="blue")
+            console.print(f"Message: {result.get('message', '')}", style="blue")
+            return True
+        else:
+            console.print(f"❌ Connection test failed: {result.get('message', 'Unknown error')}", style="red")
+            return False
         
     except Exception as e:
         console.print(f"❌ Claude API connection failed: {e}", style="red")
+        console.print(f"Error type: {type(e).__name__}", style="yellow")
         return False
 
 def main():

@@ -33,11 +33,10 @@ def demo_screen_capture():
     
     try:
         # Initialize computer agent
-        config = load_config()
-        agent = ComputerAgent(config)
+        agent = ComputerAgent('config.json')
         
         console.print("✅ Computer Agent initialized")
-        console.print(f"   Screenshot path: {config.get('screenshot_path')}")
+        console.print(f"   Screenshot path: {agent.config.screenshot_path}")
         
         # Test screen capture
         with Progress(
@@ -140,8 +139,7 @@ def demo_mouse_interaction():
     console.print(Panel.fit("🖱️ Mouse Interaction Demo", style="bold green"))
     
     try:
-        config = load_config()
-        agent = ComputerAgent(config)
+        agent = ComputerAgent('config.json')
         
         # Get current mouse position
         import pyautogui
@@ -184,8 +182,8 @@ def demo_keyboard_interaction():
     console.print(Panel.fit("⌨️ Keyboard Interaction Demo", style="bold blue"))
     
     try:
-        config = load_config()
-        agent = ComputerAgent(config)
+        import pyautogui
+        agent = ComputerAgent('config.json')
         
         console.print("✅ Keyboard interaction ready")
         console.print("\n💡 Available keyboard methods:")
@@ -199,7 +197,7 @@ def demo_keyboard_interaction():
         console.print("   ✅ Text input with timing control")
         console.print("   ✅ Special key combinations")
         console.print("   ✅ Configurable typing speed")
-        console.print(f"   ✅ Current step delay: {config.get('step_delay', 0.3)}s")
+        console.print(f"   ✅ PyAutoGUI pause: {pyautogui.PAUSE}s")
         
     except Exception as e:
         console.print(f"❌ Keyboard interaction error: {str(e)}")

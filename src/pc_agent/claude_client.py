@@ -198,7 +198,16 @@ Return your plan in JSON format:
             response_text = message.content[0].text
             
             try:
-                plan = json.loads(response_text)
+                # Remove markdown code blocks if present
+                if response_text.strip().startswith('```'):
+                    # Extract JSON from code blocks
+                    lines = response_text.strip().split('\n')
+                    # Remove first line (```json or ```) and last line (```)
+                    json_text = '\n'.join(lines[1:-1])
+                else:
+                    json_text = response_text
+                
+                plan = json.loads(json_text)
                 logger.info(f"Task plan created with {len(plan.get('steps', []))} steps")
                 return plan
             except json.JSONDecodeError:

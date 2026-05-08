@@ -714,7 +714,7 @@ def example_1_basic_navigation(automator: SafeWebAutomator) -> bool:
     console.print(Panel.fit("📍 Example 1: Basic Navigation", style="bold cyan"))
     
     try:
-        url = "https://example.com"
+        url = "https://claude.ai"
         console.print(f"Navigating to {url}...")
         
         with Progress(

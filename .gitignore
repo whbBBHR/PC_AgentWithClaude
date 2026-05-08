@@ -99,4 +99,4 @@ chromedriver.log
 # Temporary files
 *.tmp
 *.temp
-.cache/
+.cache/config.json.backup

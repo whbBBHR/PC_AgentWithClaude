@@ -15,23 +15,25 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
 from pc_agent import ComputerAgent
+from pc_agent.web_automator import WebAutomator
 
 
 def recover_navigation(agent, url, max_attempts=3):
     """Attempt navigation with automatic recovery from failures"""
+
     for attempt in range(max_attempts):
         try:
             # Ensure web automator exists
             if not hasattr(agent, 'web_automator') or agent.web_automator is None:
                 print(f"🔄 Initializing web automator (attempt {attempt + 1})...")
-                agent.initialize_web_automator()
+                agent.web_automator = WebAutomator(agent.config)
                 time.sleep(2)
-            
+
             # Try navigation
             if agent.navigate_to(url):
                 print("✅ Navigation successful!")
                 return True
-            
+
             # Failed - cleanup and retry
             print(f"⚠️  Navigation failed (attempt {attempt + 1}/{max_attempts})")
             if attempt < max_attempts - 1:
@@ -42,12 +44,12 @@ def recover_navigation(agent, url, max_attempts=3):
                     pass
                 agent.web_automator = None
                 time.sleep(3)
-                
+
         except Exception as e:
             print(f"❌ Error on attempt {attempt + 1}: {e}")
             if attempt < max_attempts - 1:
                 time.sleep(3)
-    
+
     print("❌ All navigation attempts failed")
     print("💡 See NAVIGATION_TROUBLESHOOTING.md for help")
     return False
@@ -187,7 +189,7 @@ def demonstrate_web_automation(agent):
                 
                 # Take a screenshot of results
                 time.sleep(2)
-                screenshot_path = "screenshots/search_results.png"
+                screenshot_path = "screenshots/search_results.jpg"
                 agent.web_automator.take_screenshot(screenshot_path)
                 print(f"📸 Screenshot saved: {screenshot_path}")
                 

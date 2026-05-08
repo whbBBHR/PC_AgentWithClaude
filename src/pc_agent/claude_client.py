@@ -13,7 +13,8 @@ from loguru import logger
 
 try:
     from dotenv import load_dotenv
-    load_dotenv()
+    from pathlib import Path
+    load_dotenv(Path(__file__).parent.parent.parent / '.env')
 except ImportError:
     pass  # dotenv is optional
 
@@ -168,7 +169,7 @@ Return your plan in JSON format:
     "steps": [
         {{
             "step_number": 1,
-            "action": "click|type|navigate|wait|analyze",
+            "action": "click|type|navigate|wait|analyze|capture|scroll|key|generate_report|output|decide",
             "description": "what to do in this step",
             "parameters": {{
                 "target": "what element to interact with",

@@ -447,7 +447,8 @@ class ComputerAgent:
     def cleanup(self):
         """Cleanup resources"""
         try:
-            self.web_automator.cleanup()
+            if self.web_automator is not None:
+                self.web_automator.cleanup()
             logger.info("Computer Agent cleaned up successfully")
         except Exception as e:
             logger.error(f"Error during cleanup: {e}")

@@ -353,6 +353,12 @@ class TaskExecutor:
                 return self._execute_scroll_action(params)
             elif action == 'key':
                 return self._execute_key_action(params)
+            elif action in ('capture', 'screenshot', 'capture_screen'):
+                return self._execute_capture_action(params)
+            elif action in ('generate_report', 'report', 'summarize', 'summary'):
+                return self._execute_report_action(params)
+            elif action in ('output', 'display', 'print', 'save'):
+                return self._execute_output_action(params)
             else:
                 logger.error(f"Unknown action: {action}")
                 return False
@@ -438,7 +444,72 @@ class TaskExecutor:
             return self.computer_agent.press_key(key)
         return False
 
-    def _should_abort_on_failure(self, failed_step: TaskStep, 
+    def _execute_capture_action(self, params: Dict[str, Any]) -> bool:
+        """Execute screen capture/screenshot action"""
+        try:
+            region = params.get('region', None)
+            save_path = params.get('path', params.get('filename', ''))
+
+            screenshot = self.computer_agent.capture_screen(region=region)
+
+            if screenshot is not None:
+                if save_path:
+                    import cv2
+                    cv2.imwrite(save_path, screenshot)
+                    logger.info(f"Screenshot saved to {save_path}")
+                else:
+                    logger.info("Screenshot captured successfully")
+                return True
+            else:
+                logger.error("Screenshot capture returned None")
+                return False
+        except Exception as e:
+            logger.error(f"Capture action failed: {e}")
+            return False
+
+    def _execute_report_action(self, params: Dict[str, Any]) -> bool:
+        """Execute report generation action"""
+        try:
+            report_type = params.get('type', 'summary')
+            content = params.get('content', '')
+            data = params.get('data', {})
+
+            logger.info(f"Generating {report_type} report")
+
+            # If there's content or data, use Claude to generate a report
+            if content or data:
+                prompt = f"Generate a {report_type} report based on: {content or json.dumps(data)}"
+                report = self.computer_agent.claude_client.send_message(prompt)
+                logger.info(f"Report generated: {report[:200]}...")
+            else:
+                # Generate from execution context
+                logger.info("Report: No specific content provided, using execution context")
+
+            return True
+        except Exception as e:
+            logger.error(f"Report generation failed: {e}")
+            return False
+
+    def _execute_output_action(self, params: Dict[str, Any]) -> bool:
+        """Execute output/display action"""
+        try:
+            content = params.get('content', params.get('text', params.get('message', '')))
+            destination = params.get('destination', 'console')
+            file_path = params.get('file_path', params.get('path', ''))
+
+            if destination == 'file' and file_path:
+                with open(file_path, 'w') as f:
+                    f.write(str(content))
+                logger.info(f"Output saved to {file_path}")
+            else:
+                logger.info(f"Output: {content}")
+
+            return True
+        except Exception as e:
+            logger.error(f"Output action failed: {e}")
+            return False
+
+    def _should_abort_on_failure(self, failed_step: TaskStep,
                                 remaining_steps: List[TaskStep]) -> bool:
         """Determine if task should be aborted due to step failure"""
         # Simple heuristic: abort if it's a navigation or critical setup step

@@ -40,7 +40,8 @@ console = Console()
 
 def load_enhanced_config():
     """Load the enhanced configuration"""
-    with open('config.json', 'r') as f:
+    config_path = Path(__file__).parent / 'config.json'
+    with open(config_path, 'r') as f:
         return json.load(f)
 
 def demo_task_planning():
@@ -58,7 +59,7 @@ def demo_task_planning():
     analyze the first 3 results, take screenshots, and generate a summary report.
     """
     
-    console.print(f"[bold yellow]Task:[/] {task_description}")
+    console.print(f"[bold yellow]Task:[/] {task}")
     console.print()
     
     # Demonstrate the planning process
@@ -229,12 +230,27 @@ def main():
         
         demo_full_integration()
     
-    console.print(Panel.fit("💡 To run with real Claude API: Add your API key to config.json", style="bold yellow"))
-    console.print()
-    console.print("[bold cyan]Next Steps:[/]")
-    console.print("1. 🔑 Add your Claude API key to config.json")
-    console.print("2. 🧪 Run: python examples/basic_interaction.py")
-    console.print("3. 🚀 Try advanced tasks with full AI automation")
+    import os
+    try:
+        from dotenv import load_dotenv
+        load_dotenv(Path(__file__).parent / '.env')
+    except ImportError:
+        pass
+
+    api_key = os.getenv('ANTHROPIC_API_KEY', '')
+    if not api_key or api_key == 'your-claude-api-key-here':
+        console.print(Panel.fit("💡 Add your Claude API key to .env as ANTHROPIC_API_KEY=sk-ant-...", style="bold yellow"))
+        console.print()
+        console.print("[bold cyan]Next Steps:[/]")
+        console.print("1. 🔑 Add your Claude API key to .env")
+        console.print("2. 🧪 Run: python examples/basic_interaction.py")
+        console.print("3. 🚀 Try advanced tasks with full AI automation")
+    else:
+        console.print(Panel.fit("✅ Claude API key detected — ready for full AI automation!", style="bold green"))
+        console.print()
+        console.print("[bold cyan]Next Steps:[/]")
+        console.print("1. 🧪 Run: python examples/basic_interaction.py")
+        console.print("2. 🚀 Try advanced tasks with full AI automation")
 
 if __name__ == "__main__":
     main()
